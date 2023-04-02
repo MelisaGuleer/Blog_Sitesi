@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.EntitySql;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,5 +17,7 @@ namespace DataAccsessLayer.Abstract
         int Delete(T p);
 
         T GetByID(int id);
+
+        List<T> List(Expression<Func<T,bool>> filter);  //İstenilen şarta göre search işlemi gerçekleştirebiliriz.//
     }
 }
