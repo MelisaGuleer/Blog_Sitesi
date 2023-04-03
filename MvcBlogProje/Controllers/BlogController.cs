@@ -1,11 +1,15 @@
 ﻿using BusinessLayer.Concrete;
+using DataAccsessLayer.Concrete;
+using EntityLayer.Concrete;
 using PagedList;
 using PagedList.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace MvcBlogProje.Controllers
 {
@@ -83,17 +87,92 @@ namespace MvcBlogProje.Controllers
         {
             return View();
         }
-        public PartialViewResult BlogCover()
+        public PartialViewResult BlogCover(int id)
         {
-            return PartialView();
+            var BlogDetailList = bm.GetBlogByID(id);
+            return PartialView(BlogDetailList);
         }
-        public PartialViewResult BlogReadAll()
+        public PartialViewResult BlogReadAll(int id)
         {
-            return PartialView();
+            var BlogDetailList = bm.GetBlogByID(id);
+            return PartialView(BlogDetailList);
         }
-        public ActionResult BlogByCategory()
+        public ActionResult BlogByCategory(int id)
         {
+            var BlogListByCategory = bm.GetBlogByCategory(id);
+            var CategoryName = bm.GetBlogByCategory(id).Select(y => y.Category.CategoryName).FirstOrDefault();
+            ViewBag.CategoryName = CategoryName;
+            var CategoryDesc = bm.GetBlogByCategory(id).Select(y => y.Category.CategoryDescription).FirstOrDefault();
+            ViewBag.CategoryDesc = CategoryDesc;
+            return View(BlogListByCategory);
+        }
+
+        public ActionResult AdminBlogList()
+        {
+            var bloglist = bm.GetAll();
+            return View(bloglist); 
+        }
+        [HttpGet]
+        public ActionResult AddNewBlog()
+        {
+            Context c = new Context();
+            List<SelectListItem> values = (from x in c.Categories.ToList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.CategoryName,
+                                               Value = x.CategoryID.ToString()
+                                           }).ToList();
+            ViewBag.values = values;
+
+            List<SelectListItem> values2 = (from x in c.Authors.ToList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.AuthorName,
+                                               Value = x.AuthorID.ToString()
+                                           }).ToList();
+            ViewBag.values2 = values2;
             return View();
+        }
+        [HttpPost]
+        public ActionResult AddNewBlog(Blog b)
+        {
+            bm.BlogAddBL(b);
+
+            return RedirectToAction("AdminBlogList");
+        }
+        public ActionResult DeleteBlog(int id)
+        {
+            bm.DeleteBlogBL(id);
+            return RedirectToAction("AdminBlogList");
+        }
+        [HttpGet]
+        public ActionResult UpdateBlog(int id)
+        {
+            Blog blog = bm.FindBlog(id);
+            Context c = new Context();
+            List<SelectListItem> values = (from x in c.Categories.ToList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.CategoryName,
+                                               Value = x.CategoryID.ToString()
+                                           }).ToList();
+            ViewBag.values = values;
+
+            List<SelectListItem> values2 = (from x in c.Authors.ToList()
+                                            select new SelectListItem
+                                            {
+                                                Text = x.AuthorName,
+                                                Value = x.AuthorID.ToString()
+                                            }).ToList();
+            ViewBag.values2 = values2;
+            return View(blog);
+        }
+        [HttpPost]
+        public ActionResult UpdateBlog(Blog p)
+        {
+            bm.UpdateBlog(p);
+            return RedirectToAction("AdminBlogList");
+
         }
     }
 }
