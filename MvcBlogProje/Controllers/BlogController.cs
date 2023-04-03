@@ -123,13 +123,56 @@ namespace MvcBlogProje.Controllers
                                                Value = x.CategoryID.ToString()
                                            }).ToList();
             ViewBag.values = values;
+
+            List<SelectListItem> values2 = (from x in c.Authors.ToList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.AuthorName,
+                                               Value = x.AuthorID.ToString()
+                                           }).ToList();
+            ViewBag.values2 = values2;
             return View();
         }
         [HttpPost]
         public ActionResult AddNewBlog(Blog b)
         {
-            return View();
-        }
+            bm.BlogAddBL(b);
 
+            return RedirectToAction("AdminBlogList");
+        }
+        public ActionResult DeleteBlog(int id)
+        {
+            bm.DeleteBlogBL(id);
+            return RedirectToAction("AdminBlogList");
+        }
+        [HttpGet]
+        public ActionResult UpdateBlog(int id)
+        {
+            Blog blog = bm.FindBlog(id);
+            Context c = new Context();
+            List<SelectListItem> values = (from x in c.Categories.ToList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.CategoryName,
+                                               Value = x.CategoryID.ToString()
+                                           }).ToList();
+            ViewBag.values = values;
+
+            List<SelectListItem> values2 = (from x in c.Authors.ToList()
+                                            select new SelectListItem
+                                            {
+                                                Text = x.AuthorName,
+                                                Value = x.AuthorID.ToString()
+                                            }).ToList();
+            ViewBag.values2 = values2;
+            return View(blog);
+        }
+        [HttpPost]
+        public ActionResult UpdateBlog(Blog p)
+        {
+            bm.UpdateBlog(p);
+            return RedirectToAction("AdminBlogList");
+
+        }
     }
 }

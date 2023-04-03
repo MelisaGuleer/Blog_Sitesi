@@ -1,11 +1,14 @@
 ﻿@model EntityLayer.Concrete.Blog
 
 @{
-    ViewBag.Title = "AddNewBlog";
+    ViewBag.Title = "UpdateBlog";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
 <form class="form-group" method="post">
+    @Html.Label("Blog ID")
+    @Html.TextBoxFor(x => x.BlogID, new { @class = "form-control" })
+
     @Html.Label("Blog Başlığı")
     @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
     <br />
@@ -27,3 +30,5 @@
     <button class="btn btn-info">Kaydet</button>
 
 </form>
+
+

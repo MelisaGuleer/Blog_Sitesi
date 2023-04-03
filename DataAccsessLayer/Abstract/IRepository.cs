@@ -18,6 +18,12 @@ namespace DataAccsessLayer.Abstract
 
         T GetByID(int id);
 
-        List<T> List(Expression<Func<T,bool>> filter);  //İstenilen şarta göre search işlemi gerçekleştirebiliriz.//
+        List<T> List(Expression<Func<T,bool>> filter);
+
+        //İstenilen şarta göre search işlemi gerçekleştirebiliriz.//
+
+        T Find(Expression<Func<T, bool>> where);
     }
+
+
 }

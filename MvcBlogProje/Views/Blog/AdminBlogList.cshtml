@@ -25,8 +25,8 @@
                     <td>@item.Category.CategoryName </td>
                     <td>@item.BlogTitle</td>
                     <td>@item.BlogDate.ToShortDateString()</td>
-                    <td><a href="" class="btn btn-danger">Güncelle</a></td>
-                    <td><a href="" class="btn btn-success">Sil</a></td>
+                    <td><a href="/Blog/UpdateBlog/@item.BlogID" class="btn btn-danger">Güncelle</a></td>
+                    <td><a href="/Blog/DeleteBlog/@item.BlogID" class="btn btn-success">Sil</a></td>
                     <td><a href="" class="btn btn-warning">Detaylar</a></td>
                     <td><a href="" class="btn btn-dark">Yorumlar</a></td>
                 </tr>
