@@ -137,7 +137,6 @@ namespace MvcBlogProje.Controllers
         public ActionResult AddNewBlog(Blog b)
         {
             bm.BlogAddBL(b);
-
             return RedirectToAction("AdminBlogList");
         }
         public ActionResult DeleteBlog(int id)
@@ -173,6 +172,12 @@ namespace MvcBlogProje.Controllers
             bm.UpdateBlog(p);
             return RedirectToAction("AdminBlogList");
 
+        }
+        public ActionResult GetCommentByBlog(int id)
+        {
+            CommentManager cm = new CommentManager();
+            var commentList = cm.CommentByBlog(id);
+            return View(commentList);
         }
     }
 }
